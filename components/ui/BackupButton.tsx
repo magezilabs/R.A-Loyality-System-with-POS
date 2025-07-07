@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import useMonthlyCSVExport from '../../../hooks/useMonthlyCSVExport';
+import useMonthlyCSVExport from '@/hooks/useMonthlyCSVExport';
 
 const MonthlyExportButton = () => {
   const [loading, setLoading] = useState(false);

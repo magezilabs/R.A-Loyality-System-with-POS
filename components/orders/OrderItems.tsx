@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, Text, View } from 'react-native';
-import type { OrderItem } from '../../../utils/types';
+import type { OrderItem } from '@/utils/types';
 
 interface Props {
   items: OrderItem[];

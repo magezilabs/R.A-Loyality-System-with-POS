@@ -1,16 +1,16 @@
+import OrderItem from '@/components/orders/OrderItems';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { dbPromise } from '../../services/database'; // Async SQLite instance
 import { printReceipt } from '../../services/printer';
 import { formatCurrency } from '../../utils/helper';
-import OrderItem from '../components/orders/OrderItems';
 
 const OrderReviewScreen = () => {
+  const db = useSQLiteContext();
   const [pendingOrders, setPendingOrders] = useState([]);
 
   const fetchOrders = async () => {
-    const db = await dbPromise;
     const result = await db.execAsync(
       `SELECT * FROM orders WHERE status = ? ORDER BY created_at ASC`,
       ['submitted']
@@ -25,7 +25,6 @@ const OrderReviewScreen = () => {
   }, []);
 
   const updateOrderStatus = async (orderId, status, reason = null) => {
-    const db = await dbPromise;
     await db.execAsync(
       `UPDATE orders SET status = ?, decline_reason = ? WHERE id = ?`,
       [status, reason, orderId]
@@ -86,12 +85,12 @@ const OrderReviewScreen = () => {
 };
 
 const OrderItemsList = ({ orderId }) => {
+  const db = useSQLiteContext();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchItems = async () => {
-      const db = await dbPromise;
-      const result = await db.executeAsync(
+      const result = await db.execAsync(
         `SELECT oi.*, mi.name FROM order_items oi 
          JOIN menu_items mi ON mi.id = oi.menu_item_id 
          WHERE oi.order_id = ?`,
@@ -100,7 +99,7 @@ const OrderItemsList = ({ orderId }) => {
       setItems(result.rows);
     };
     fetchItems();
-  }, [orderId]);
+  }, [db, orderId]);
 
   return (
     <FlatList

@@ -1,0 +1,1 @@
+<Button title="Reset Seed Data" onPress={() => seedDatabase(db)} />

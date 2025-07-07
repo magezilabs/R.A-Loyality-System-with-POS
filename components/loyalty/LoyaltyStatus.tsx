@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import type { LoyaltyStatus } from '../../../utils/types';
+import type { LoyaltyStatus } from '@/utils/types';
 
 interface Props {
   status: LoyaltyStatus;

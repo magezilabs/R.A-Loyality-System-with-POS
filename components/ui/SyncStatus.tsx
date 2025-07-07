@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import useNetworkStatus from '../../../hooks/useNetworkStatus';
+import useNetworkStatus from '@/hooks/useNetworkStatus';
 
 const SyncStatus = () => {
   const isConnected = useNetworkStatus();

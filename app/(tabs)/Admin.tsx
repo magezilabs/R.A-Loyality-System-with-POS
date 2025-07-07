@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -8,12 +9,12 @@ import {
   View
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { dbPromise } from '../../services/database'; // Async SQLite instance
 import { exportMonthlyCSV } from '../../services/exportMonthlyCSV';
 
 const ADMIN_PIN = '2025';
 
 const AdminPanel = () => {
+  const db = useSQLiteContext(); // <-- call hook at top level
   const [pin, setPin] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [autoBackupEnabled, setAutoBackupEnabled] = useState(true);
@@ -60,10 +61,9 @@ const AdminPanel = () => {
     }
 
     try {
-      const db = await dbPromise;
       await db.runAsync(
         `INSERT INTO menu_items (id, name, price) VALUES (?, ?, ?)`,
-        [`menu_${Date.now()}`, menuName.trim(), parseInt(menuPrice)]
+        [`m_${Date.now()}`, menuName.trim(), parseInt(menuPrice)]
       );
       Toast.show({ type: 'success', text1: 'Item Added', text2: `${menuName} saved.` });
       setMenuName('');

@@ -1,6 +1,6 @@
+import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { dbPromise } from '../../services/database';
 
 interface Redemption {
   id?: string | number;
@@ -9,6 +9,7 @@ interface Redemption {
 }
 
 const LoyaltyScreen = () => {
+  const db = useSQLiteContext();
   const [loyaltyInfo, setLoyaltyInfo] = useState<{ points: number; redeemed: Redemption[] }>({
     points: 0,
     redeemed: []
@@ -17,8 +18,6 @@ const LoyaltyScreen = () => {
   const customerId = '256XXXXXXXXX'; // Ideally passed via context
 
   const fetchLoyaltyData = async () => {
-    const db = await dbPromise;
-
     // Get points
     const pointsResult = await db.execAsync(
       `SELECT points FROM customers WHERE id = ?`,
@@ -45,6 +44,7 @@ const LoyaltyScreen = () => {
     fetchLoyaltyData();
     const interval = setInterval(fetchLoyaltyData, 10000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

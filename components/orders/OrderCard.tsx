@@ -1,8 +1,8 @@
+import { formatCurrency, getOrderStatusColor } from '@/utils/helper';
+import type { Order } from '@/utils/types';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { formatCurrency, getOrderStatusColor } from '../../../utils/helper';
-import type { Order } from '../../../utils/types';
 
 interface Props {
   order: Order;

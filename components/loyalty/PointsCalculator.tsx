@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { calculatePoints } from '../../../utils/helper';
+import { calculatePoints } from '@/utils/helper';
 
 interface PointsCalculatorProps {
   amountSpent: number;
