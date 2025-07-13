@@ -16,16 +16,21 @@ export default function OrdersTab() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const result = await db.execAsync(
-          'SELECT * FROM menu_items'
+        const result = await db.getAllAsync(
+          'SELECT * FROM menu_items WHERE is_available = 1'
         );
-        setAllItems(result.rows || []);
-        setFilteredItems(result.rows || []);
+        console.log(result)
+        setAllItems(result || []);
+        setFilteredItems(result || []);
+        console.log(result);
+        
       } catch (error) {
         console.error('Menu fetch error:', error);
       }
     };
     fetchItems();
+    /*const interval = setInterval(fetchItems, 4000);
+    return () => clearInterval(interval);*/
   }, [db]);
 
   const handleSelectCategory = (category: string | null) => {

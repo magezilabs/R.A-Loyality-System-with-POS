@@ -1,56 +1,41 @@
-import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useLoyalty } from '@/context/LoyaltyContext';
+import React from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-interface CustomerFormProps {
-  onContinue: (customer: any) => void;
+interface Props {
+  phone: string;
+  setPhone: (val: string) => void;
 }
 
-const CustomerForm: React.FC<CustomerFormProps> = ({ onContinue }) => {
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const { checkLoyaltyStatus } = useLoyalty();
-
-  const handleSubmit = async () => {
-    const customer = await checkLoyaltyStatus(phone, email);
-    onContinue(customer);
-  };
-
+const CustomerForm = ({ phone, setPhone }: Props) => {
   return (
     <View style={styles.container}>
-      <Text>Customer Info (Optional)</Text>
+      <Text style={styles.label}>Customer Phone (optional)</Text>
       <TextInput
-        placeholder="Phone"
+        style={styles.input}
+        placeholder="Enter phone number"
+        keyboardType="phone-pad"
         value={phone}
         onChangeText={setPhone}
-        keyboardType="phone-pad"
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        style={styles.input}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
-      <Button
-        title="Skip → Anonymous"
-        onPress={() => onContinue(null)}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 16 },
+  container: {
+    marginVertical: 10,
+  },
+  label: {
+    marginBottom: 6,
+    fontSize: 14,
+    fontWeight: '500',
+  },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
-    marginVertical: 8,
-    padding: 8,
-    borderRadius: 4
-  }
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 8,
+  },
 });
 
 export default CustomerForm;

@@ -20,6 +20,8 @@ const AdminPanel = () => {
   const [autoBackupEnabled, setAutoBackupEnabled] = useState(true);
   const [menuName, setMenuName] = useState('');
   const [menuPrice, setMenuPrice] = useState('');
+  const [category, setCategory] = useState('');
+
 
   useEffect(() => {
     AsyncStorage.getItem('autoBackupEnabled').then(value => {
@@ -32,7 +34,7 @@ const AdminPanel = () => {
       setAuthenticated(true);
       setPin('');
     } else {
-      Toast.show({ type: 'error', text1: 'Access Denied', text2: 'Incorrect PIN' });
+      Toast.show({ type: 'error', text1: 'Access Denied', text2: 'Incorrect PIN', position:'top' });
     }
   };
 
@@ -54,25 +56,28 @@ const AdminPanel = () => {
     }
   };
 
+  //item additon function
   const handleAddMenuItem = async () => {
     if (!menuName || !menuPrice || isNaN(Number(menuPrice))) {
-      Toast.show({ type: 'error', text1: 'Invalid Input', text2: 'Check name and price.' });
+      Toast.show({ type: 'error', text1: 'Invalid Input', text2: 'Check name and price and category.' });
       return;
     }
-
     try {
       await db.runAsync(
-        `INSERT INTO menu_items (id, name, price) VALUES (?, ?, ?)`,
-        [`m_${Date.now()}`, menuName.trim(), parseInt(menuPrice)]
+        `INSERT INTO menu_items (id, name, price, category, is_available) VALUES (?, ?, ?, ?, ?)`,
+        [`m_${Date.now()}`, menuName.trim(), parseInt(menuPrice), category.trim(), 1]
       );
-      Toast.show({ type: 'success', text1: 'Item Added', text2: `${menuName} saved.` });
+      Toast.show({ type: 'success', text1: 'Item Added', text2: `${menuName} saved.`, position:'top'});
       setMenuName('');
       setMenuPrice('');
+      setCategory('');
     } catch (error) {
       console.error(error);
-      Toast.show({ type: 'error', text1: 'Insert Failed' });
+      Toast.show({ type: 'error', text1: 'Insert Failed', position:'top'});
     }
   };
+
+  //item removal function
 
   if (!authenticated) {
     return (
@@ -86,7 +91,7 @@ const AdminPanel = () => {
           secureTextEntry keyboardType="number-pad"
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Unlock Panel</Text>
+          <Text style={styles.buttonText} disabled ={pin.length !==4}>Unlock Panel</Text>
         </TouchableOpacity>
       </View>
     );
@@ -120,6 +125,13 @@ const AdminPanel = () => {
           placeholder="Item Price"
           keyboardType="number-pad"
         />
+        <TextInput
+          style={styles.input}
+          value={category}
+          onChangeText={setCategory}
+          placeholder="Category"
+        />
+         
         <TouchableOpacity style={styles.button} onPress={handleAddMenuItem}>
           <Text style={styles.buttonText}>Save Item</Text>
         </TouchableOpacity>

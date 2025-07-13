@@ -1,11 +1,9 @@
 import { OrderProvider } from '@/context/OrderContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { SQLiteProvider } from 'expo-sqlite';
 
 export default function TabLayout() {
   return (
-    <SQLiteProvider databaseName="posa.db" databaseOptions={{ version: 1 }}>
     <OrderProvider>
     <Tabs
       screenOptions={({ route }) => ({
@@ -14,8 +12,8 @@ export default function TabLayout() {
             Order: 'restaurant',
             Review: 'list-alt',
             Approved: 'check-circle',
-            Admin: 'admin-panel-settings',
             Loyalty: 'card-giftcard',
+            Admin: 'admin-panel-settings',
           };
           return <MaterialIcons name={icons[route.name as keyof typeof icons] as keyof typeof MaterialIcons.glyphMap} size={size} color={color} />;
         },
@@ -24,6 +22,5 @@ export default function TabLayout() {
       })}
     />
     </OrderProvider>
-    </SQLiteProvider>
   );
 }

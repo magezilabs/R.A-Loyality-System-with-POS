@@ -12,11 +12,11 @@ export async function seedDatabase(db: SQLiteDatabase) {
 
   await db.execAsync(`
     INSERT INTO menu_items (id, name, price, category, is_available) VALUES
-      ('m1', 'Burger', 5000, 'Fast Food', 1),
-      ('m2', 'Pizza', 8000, 'Fast Food', 1),
-      ('m3', 'Coffee', 3000, 'Drinks', 1),
-      ('m4', 'Ice Cream', 4000, 'Dessert', 0),
-      ('m5', 'Fries', 2500, 'Fast Food', 1);
+      ('m1', '🍔 Burger', 5000, 'Fast Food', 1),
+      ('m2', '🍕 Pizza', 8000, 'Fast Food', 1),
+      ('m3', '☕ Coffee', 3000, 'Drinks', 1),
+      ('m4', '🍧 Ice Cream', 4000, 'Dessert', 1),
+      ('m5', '🍟 Fries', 2500, 'Fast Food', 1);
   `);
 
   await db.execAsync(`
@@ -53,6 +53,15 @@ export async function seedDatabase(db: SQLiteDatabase) {
       ('c3', 15, ${Date.now()}),
       ('c4', 20, ${Date.now()}),
       ('c5', 25, ${Date.now()});
+  `);
+
+  await db.execAsync(`
+    INSERT INTO staff (id, name, pin, role) VALUES
+      ('s1', 'James', '1234', 'admin'),
+      ('s2', 'Linda', '4321', 'cashier'),
+      ('s3', 'Michael', '5678', 'manager'),
+      ('s4', 'Rose', '8765', 'cashier'),
+      ('s5', 'Alex', '9999', 'support');
   `);
 
   await db.execAsync(`
