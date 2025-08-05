@@ -1,40 +1,55 @@
-import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
-const Login = () => {
+
+const Login : React.FC<{ children: React.ReactNode }> =  ( {children} ) => {
   const [pin, setPin] = useState('');
-  const { login } = useAuth(); // ✅ Assuming AuthContext exposes login(pin)
+  const [user, setUser] = useState('');
+  const { isAuthenticated, checkPassword } = useAuth(); 
 
   const handleLogin = () => {
-    const success = login(pin);
-    if (success) {
-      router.replace('./Orders'); // Redirect to tab layout
-    } else {
-      Alert.alert('Access Denied', 'Invalid PIN. Please try again.');
+    const success = checkPassword(user, pin);
+    if (!success){
+      Alert.alert('Access Denied', 'Invalid . Please try again.');
     }
-  };
+  }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Staff Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter 4-digit PIN"
-        keyboardType="number-pad"
-        secureTextEntry
-        maxLength={4}
-        value={pin}
-        onChangeText={setPin}
-      />
-      <Button
-        title="Login"
-        onPress={handleLogin}
-        disabled={pin.length !== 4}
-      />
-    </View>
-  );
+  setPin('');
+  setUser('');
+
+
+    if (!isAuthenticated) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Staff Login</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Your name"
+            keyboardType='default'
+            maxLength={30}
+            value={user}
+            onChangeText={setUser}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Enter 4-digit "
+            keyboardType="number-pad"
+            secureTextEntry
+            maxLength={4}
+            value={pin}
+            onChangeText={setPin}
+          />
+          <Button
+            title="Login"
+            onPress={handleLogin}
+            disabled={pin.length !== 4}
+          />
+        </View>
+      );
+  }
+  return children;
 };
 
 const styles = StyleSheet.create({

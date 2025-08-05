@@ -1,0 +1,44 @@
+this system was meant to flow like below but also supposed to sync only points and id(telephone number) for completed orders to firebase which acts as our loyalty program engine but while avoiding duplicates and unnecessary calls to the firebase. New users should be registered automatically
+🍽️ Orders Flow
+New Orders:
+•	Menu items fetched from menu_items table
+•	Items added to context-driven currentOrder state
+•	Submitted as pending to orders and order_items
+Review & Approval:
+•	Review.tsx polls pending orders every 3s
+•	Staff can approve (trigger print) or decline (store reason)
+•	Status updated in SQLite
+Approved Orders:
+•	Filtered view showing approved transactions
+•	Printable receipts available via ReceiptPayload
+
+🔧 Admin Features
+•	View and export monthly CSV reports
+•	Future scope: Add/remove menu items, manage staff, loyalty programs
+
+📤 CSV & Print Services
+•	useMonthlyCSVExport.ts: Hook triggered at app start to run backup logic
+•	printer.ts: Formats and sends receipt data to a paired thermal printer
+
+📊 Data Models (from types.ts)
+Table	Key Fields
+orders	id, totalAmount, status, declineReason
+order_items	id, menuItemId, quantity, unitPrice
+customers	id, phone, points
+staff	id, name, pin, role
+Challenges 
+•	id conflicts and removal of non present child errors.
+•	Errors in the printing functionality (it should be ready to be used by both wired and a Bluetooth receipt printer and a fallback of just logging the error to the console).
+
+
+
+
+
+
+More prompt
+•	The admin should be able to set passwords for employees and itself.
+•	The keyboard shouldn’t cover the text input areas when am typing.
+•	The CSV functionality should also create a file for the logs of the login.
+•	The admin page should also be able to construct tables for/from what/which the csv exports.
+
+follow the update code syntax like the work space follows

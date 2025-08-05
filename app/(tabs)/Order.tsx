@@ -29,8 +29,8 @@ export default function OrdersTab() {
       }
     };
     fetchItems();
-    /*const interval = setInterval(fetchItems, 4000);
-    return () => clearInterval(interval);*/
+    const interval = setInterval(fetchItems, 30000);
+    return () => clearInterval(interval);
   }, [db]);
 
   const handleSelectCategory = (category: string | null) => {
@@ -49,6 +49,8 @@ export default function OrdersTab() {
         renderItem={({ item }) => (
           <MenuItem item={item} onPress={() => addToOrder(item)} />
         )}
+        ListFooterComponent ={ (<Text></Text>) }
+        ListFooterComponentStyle ={{alignItems:"center", justifyContent:'center', marginVertical:5}}
         ListEmptyComponent={
           <Text style={styles.empty}>No items in this category</Text>
         }
@@ -59,7 +61,7 @@ export default function OrdersTab() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#f8f9fa' },
+  container: { flex: 1, padding: 15, backgroundColor: '#f8f9fa' },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
   empty: { textAlign: 'center', marginTop: 40, fontSize: 14, color: '#888' },
 });
