@@ -64,14 +64,6 @@ export async function seedDatabase(db: SQLiteDatabase) {
       ('s5', 'Alex', '9999', 'support');
   `);
 
-  await db.execAsync(`
-    INSERT INTO staff (id, name, pin, role) VALUES
-      ('s1', 'James', '1234', 'admin'),
-      ('s2', 'Linda', '4321', 'cashier'),
-      ('s3', 'Michael', '5678', 'manager'),
-      ('s4', 'Rose', '8765', 'cashier'),
-      ('s5', 'Alex', '9999', 'support');
-  `);
 
   console.log('🌱 Seed data inserted.');
 }

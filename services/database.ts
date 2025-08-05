@@ -60,8 +60,8 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     }
 
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
-    const { rows } = await db.execAsync("SELECT name FROM sqlite_master WHERE type='table'");
-    console.log('✅ Tables initialized:', rows.map((r: any) => r.name));
+    //const { rows } = await db.execAsync("SELECT name FROM sqlite_master WHERE type='table'");
+    //console.log('✅ Tables initialized:', rows.map((r: any) => r.name));
   } catch (err) {
     console.error('❌ Migration failed:', err);
     throw err;

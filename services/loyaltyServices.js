@@ -1,4 +1,15 @@
-import { dbPromise } from './database';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect } from 'react';
+export function FetchDb(){
+    const db = useSQLiteContext();
+
+ useEffect(()=>{
+    FetchDb()
+  }, [])
+
+    return db
+}
+
 
 export const getRewardOptions = () => [
   { points: 50, reward: 'Free Drink' },
@@ -7,7 +18,7 @@ export const getRewardOptions = () => [
 ];
 
 export const redeemPoints = async (customerId, pointsToRedeem) => {
-  const db = await dbPromise;
+  const db = FetchDb();
   const result = await db.execAsync(
     `SELECT points FROM customers WHERE id = ?`,
     [customerId]

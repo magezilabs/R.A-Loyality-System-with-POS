@@ -1,5 +1,5 @@
+import { useSQLiteContext } from 'expo-sqlite';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { dbPromise } from '../services/database';
 import { POINTS_CONFIG } from '../utils/constants';
 import type { LoyaltyStatus } from '../utils/types';
 
@@ -18,14 +18,16 @@ const LoyaltyContext = createContext<LoyaltyContextType>({
 export const LoyaltyProvider = ({ children }: { children: ReactNode }) => {
   const [loyaltyStatus, setLoyaltyStatus] = useState<LoyaltyStatus>(null);
 
+   const db = useSQLiteContext();
+
   const checkLoyaltyStatus = async (phone: string, email: string | null = null) => {
-    const db = await dbPromise;
+
     const result = await db.execAsync(
       'SELECT * FROM customers WHERE phone = ?',
       [phone]
     );
-    if (result.rows.length > 0) {
-      const customer = result.rows[0];
+    if (result.length > 0) {
+      const customer = result[0];
       setLoyaltyStatus({
         status: 'verified',
         points: customer.points,

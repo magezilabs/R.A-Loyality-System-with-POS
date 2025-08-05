@@ -1,7 +1,20 @@
 import * as FileSystem from 'expo-file-system';
-import { dbPromise } from './database'; // Make sure database.js exports dbPromise
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect } from 'react';
+
+export function FetchDb(){
+    const db = useSQLiteContext();
+
+ useEffect(()=>{
+    FetchDb()
+  }, [])
+
+    return db
+}
+
 
 export const exportMonthlyCSV = async () => {
+  const db = FetchDb();
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -11,7 +24,6 @@ export const exportMonthlyCSV = async () => {
 
   const filePath = `${dir}monthly_backup_${year}_${month}.csv`;
 
-  const db = dbPromise;
   const result = await db.execAsync(
     `SELECT o.id as order_id, o.total_amount, o.created_at, c.phone as customer_phone, c.points 
      FROM orders o 
