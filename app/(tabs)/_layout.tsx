@@ -1,8 +1,7 @@
+import { AuthProvider } from '@/context/AuthContext';
 import { OrderProvider } from '@/context/OrderContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-
-import { AuthProvider } from '@/context/AuthContext';
 import LoginScreen from '../LoginScreen';
 
 export default function TabLayout() {
@@ -39,9 +38,9 @@ export default function TabLayout() {
     } 
       }>
         <Tabs.Screen name='Order' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='restaurant' color={color} size={size}/>)}} />
-        <Tabs.Screen name='Review' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='list-alt' color={color}/>)}} />
-         <Tabs.Screen name='Loyalty' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='card-giftcard' color={color}/>)}} />
-        <Tabs.Screen name='Approved' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='check-circle' color={color}/>)}} />
+        <Tabs.Screen name='Review' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='list-alt' color={color} size={size}/>)}} />
+         <Tabs.Screen name='Loyalty' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='card-giftcard' color={color} size={size}/>)}} />
+        <Tabs.Screen name='Approved' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='check-circle' color={color} size={size}/>)}} />
         <Tabs.Screen name='Admin' options= { {tabBarIcon:({ color, size }) => (<MaterialIcons name='settings' color={color}/>)}} />
     </Tabs>
 

@@ -1,6 +1,6 @@
+import type { ReceiptPayload } from '@/utils/types';
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import type { ReceiptPayload } from '@/utils/types';
 
 const Reciept: React.FC<{ payload: ReceiptPayload }> = ({ payload }) => (
   <ScrollView style={styles.container}>

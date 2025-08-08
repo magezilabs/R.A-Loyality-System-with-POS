@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import { useSQLiteContext } from 'expo-sqlite';
 import type { MenuItem, OrderItem } from '@/utils/types';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { createContext, useContext, useState } from 'react';
 
 type OrderContextType = {
   currentOrder: OrderItem[];
@@ -38,7 +38,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           quantity: 1,
           unit_price: menuItem.price,
           name: menuItem.name,
-        },
+        }
       ];
     });
   };

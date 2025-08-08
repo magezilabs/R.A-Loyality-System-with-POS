@@ -2,14 +2,11 @@ import { SQLiteDatabase } from 'expo-sqlite';
 
 export async function seedDatabase(db: SQLiteDatabase) {
   await db.execAsync(`
-    DELETE FROM menu_items;
-    DELETE FROM orders;
-    DELETE FROM customers;
-    DELETE FROM order_items;
-    DELETE FROM loyalty_redemptions;
-    DELETE FROM staff;
-  `);
 
+    DELETE FROM orders;
+
+  `);
+/*
   await db.execAsync(`
     INSERT INTO menu_items (id, name, price, category, is_available) VALUES
       ('m1', '🍔 Burger', 5000, 'Fast Food', 1),
@@ -63,7 +60,7 @@ export async function seedDatabase(db: SQLiteDatabase) {
       ('s4', 'Rose', '8765', 'cashier'),
       ('s5', 'Alex', '9999', 'support');
   `);
-
+*/
 
   console.log('🌱 Seed data inserted.');
 }

@@ -46,6 +46,12 @@ const CREATE_TABLES = [
     pin TEXT,
     role TEXT
   );`,
+  `CREATE TABLE IF NOT EXISTS login_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    staff_name TEXT,
+    login_time INTEGER,
+    success INTEGER
+  );`,
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {

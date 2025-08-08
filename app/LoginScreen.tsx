@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
 
@@ -9,19 +9,22 @@ const Login : React.FC<{ children: React.ReactNode }> =  ( {children} ) => {
   const { isAuthenticated, checkPassword } = useAuth(); 
 
   const handleLogin = () => {
-    const success = checkPassword(user, pin);
+    const success = checkPassword(user.trim(), pin.trim());
     if (!success){
       Alert.alert('Access Denied', 'Invalid . Please try again.');
     }
+    setPin('');
+    setUser('');
   }
-
-  setPin('');
-  setUser('');
 
 
     if (!isAuthenticated) {
       return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={60}
+        >
           <Text style={styles.title}>Staff Login</Text>
           <TextInput
             style={styles.input}
@@ -31,7 +34,6 @@ const Login : React.FC<{ children: React.ReactNode }> =  ( {children} ) => {
             value={user}
             onChangeText={setUser}
           />
-
           <TextInput
             style={styles.input}
             placeholder="Enter 4-digit "
@@ -46,9 +48,9 @@ const Login : React.FC<{ children: React.ReactNode }> =  ( {children} ) => {
             onPress={handleLogin}
             disabled={pin.length !== 4}
           />
-        </View>
+        </KeyboardAvoidingView>
       );
-  }
+    }
   return children;
 };
 

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "new",
-    "slug": "new",
+    "name": "Rose Arch Resturant POS",
+    "slug": "Rose Arch Resturant POS",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "automatic",
     "icon": "./assets/images/icon.png",
-    "scheme": "new",
+    "scheme": "Rose Arch Resturant POS",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

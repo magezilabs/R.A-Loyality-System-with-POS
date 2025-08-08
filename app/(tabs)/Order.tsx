@@ -20,8 +20,8 @@ export default function OrdersTab() {
           'SELECT * FROM menu_items WHERE is_available = 1'
         );
         console.log(result)
-        setAllItems(result || []);
-        setFilteredItems(result || []);
+        setAllItems((result || []) as MenuItemType[]);
+        setFilteredItems((result || []) as MenuItemType[]);
         console.log(result);
         
       } catch (error) {
@@ -43,25 +43,26 @@ export default function OrdersTab() {
     <View style={styles.container}>
       <Text style={styles.title}>Start a New Order</Text>
       <CategoryTabs onSelectCategory={handleSelectCategory} />
+   
       <FlatList
         data={filteredItems}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <MenuItem item={item} onPress={() => addToOrder(item)} />
+          <MenuItem item={item} />
         )}
-        ListFooterComponent ={ (<Text></Text>) }
+        ListFooterComponent ={ (<Text>😊 Tasty, 💪 Healthy & 🔥 Fresh</Text>) }
         ListFooterComponentStyle ={{alignItems:"center", justifyContent:'center', marginVertical:5}}
         ListEmptyComponent={
           <Text style={styles.empty}>No items in this category</Text>
         }
       />
-      {currentOrder.length > 0 && <OrderSummary items={currentOrder} />}
+      {currentOrder.length > 0 && <OrderSummary />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: '#f8f9fa' },
+  container: { flex: 1, padding: 15, backgroundColor: '#f8f9fa'},
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
   empty: { textAlign: 'center', marginTop: 40, fontSize: 14, color: '#888' },
 });

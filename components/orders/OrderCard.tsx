@@ -16,15 +16,15 @@ const OrderCard: React.FC<Props> = ({ order, showStatus = true, showLoyalty = fa
     style={styles.card}
     onPress={onPress}
     disabled={!onPress}
-    accessibilityLabel={`Order card for ${order.id?.slice(0, 6) ?? '######'}`}
-    testID={`order-card-${order.id?.slice(0, 6) ?? '######'}`}
+    accessibilityLabel={`Order card for #${order.id ?? '######'}`}
+    testID={`order-card-${order.id ?? '######'}`}
   >
     <View style={styles.row}>
-      <Text style={styles.id}>#{order.id.slice(0, 6)}</Text>
-      <Text style={[styles.status, { color: getOrderStatusColor(order.status) }]}>
+      <Text style={styles.id}>#{order.id?.toString()}</Text>
+      <Text style={[styles.status, { color: getOrderStatusColor(order.status) }]}> 
         {showStatus ? order.status : ''}
       </Text>
-      {showLoyalty && order.customer_id && !order.customer_id.startsWith('anon_') && (
+      {showLoyalty && order.customer_id && typeof order.customer_id === 'string' && !order.customer_id.startsWith('anon_') && (
         <MaterialIcons name="loyalty" size={18} color="#2a9d8f" />
       )}
     </View>

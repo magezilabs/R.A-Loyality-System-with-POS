@@ -29,7 +29,7 @@ const CategoryTabs = ({ onSelectCategory }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { marginVertical: 5 },
+  container: { marginVertical: 5, padding: 8 },
   tab: {
     paddingHorizontal: 15,
     paddingVertical: 8,

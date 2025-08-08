@@ -1,5 +1,4 @@
 import OrderCard from '@/components/orders/OrderCard';
-import OrderItem from '@/components/orders/OrderItems';
 import { printReceipt } from '@/services/printer';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
@@ -21,7 +20,7 @@ const OrderReviewScreen = () => {
       `SELECT * FROM orders WHERE status = ? ORDER BY created_at ASC`,
       ['pending']
     );
-    setOrders(res ?? []);
+    setOrders(Array.isArray(res) ? [...res] : []);
   };
 
   // 🧠 Apply discount automatically if user has ≥ 2000 points
@@ -68,7 +67,20 @@ const OrderReviewScreen = () => {
       ['approved', order.id]
     );
 
-    printReceipt(order);
+    // Fetch order items for receipt
+    const itemsRes = await db.getAllAsync(
+      `SELECT mi.name, oi.quantity, oi.unit_price as price FROM order_items oi JOIN menu_items mi ON mi.id = oi.menu_item_id WHERE oi.order_id = ?`,
+      [order.id]
+    );
+    const receiptPayload = {
+      id: order.id.toString(),
+      items: Array.isArray(itemsRes) ? (itemsRes as import('@/utils/types').ReceiptItem[]) : [],
+      totalAmount: order.total_amount,
+      createdAt: order.created_at,
+    };
+    console.log('Printing receipt:', receiptPayload);
+    printReceipt(receiptPayload);
+    console.log('Receipt print triggered');
     fetchOrders();
   };
 
@@ -77,7 +89,13 @@ const OrderReviewScreen = () => {
       `UPDATE orders SET status = ?, decline_reason = ? WHERE id = ?`,
       ['declined', 'Changed mind', order.id]
     );
+    console.log(orders);
+    console.log('successfully removed')
     fetchOrders();
+   
+   const data = await db.getAllAsync( `SELECT * FROM orders WHERE status = ? ORDER BY created_at ASC`,
+      ['pending']);
+   console.log(data);
   };
 
   const renderOrder = ({ item }: { item: any }) => (
@@ -101,12 +119,13 @@ const OrderReviewScreen = () => {
       <FlatList
         data={orders}
         renderItem={renderOrder}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, idx) => (item.id != null ? item.id.toString() : `order-fallback-${idx}`)}
         ListEmptyComponent={<Text style={styles.empty}>No pending orders</Text>}
       />
     </View>
   );
 };
+
 
 // 📦 List items under each order
 const OrderItemsList = ({ orderId }: { orderId: string }) => {
@@ -130,16 +149,11 @@ const OrderItemsList = ({ orderId }: { orderId: string }) => {
     <FlatList
       data={items}
       renderItem={({ item }) => (
-        <OrderItem
-          item={{
-            id: item.id,
-            name: item.name,
-            quantity: item.quantity,
-            price: item.unit_price,
-          }}
-        />
+        <Text style={styles.list}>
+          {item.name} x{item.quantity} @ {item.unit_price} UGX
+        </Text>
       )}
-      keyExtractor={item => item.id}
+      keyExtractor={(item, idx) => (item.id != null ? item.id.toString() : `item-fallback-${idx}`)}
     />
   );
 };
@@ -153,6 +167,8 @@ const styles = StyleSheet.create({
   approveBtn: { backgroundColor: '#2a9d8f', padding: 8, borderRadius: 5 },
   btnText: { color: '#fff', fontWeight: 'bold' },
   empty: { textAlign: 'center', color: '#666', marginTop: 40 },
+  list: {flexDirection: 'column',justifyContent:'space-between'}
+
 });
 
 export default OrderReviewScreen;

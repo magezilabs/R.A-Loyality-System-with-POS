@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput } from 'react-native';
 
 interface Props {
   phone: string;
@@ -8,7 +8,11 @@ interface Props {
 
 const CustomerForm = ({ phone, setPhone }: Props) => {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={60}
+    >
       <Text style={styles.label}>Customer Phone (optional)</Text>
       <TextInput
         style={styles.input}
@@ -17,7 +21,7 @@ const CustomerForm = ({ phone, setPhone }: Props) => {
         value={phone}
         onChangeText={setPhone}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

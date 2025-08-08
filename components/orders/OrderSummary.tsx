@@ -2,10 +2,10 @@ import { useOrder } from '@/context/OrderContext';
 import { formatCurrency } from '@/utils/helper';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ConfirmationModal from './ConfirmationModal';
 import CustomerForm from './CustomerForm';
-import OrderItem from './OrderItems';
+import OrderItems from './OrderItems';
 
 const OrderSummary = () => {
   const db = useSQLiteContext();
@@ -67,24 +67,35 @@ const OrderSummary = () => {
   if (!currentOrder.length) return null;
 
   return (
-    <View style={styles.container}>
+     <KeyboardAvoidingView
+              style={styles.container}
+              behavior={Platform.OS === 'android' ? 'padding' : undefined}
+              keyboardVerticalOffset={60}
+            >
       <Text style={styles.title}>Order Summary</Text>
       {currentOrder.map(item => (
-        <OrderItem key={item.menu_item_id} item={item} />
+        <OrderItems key={item.menu_item_id} item={item} />
       ))}
       <Text style={styles.total}>
         Subtotal: {formatCurrency(totalAmount)}
       </Text>
 
-      {phone && !phone.startsWith('anon_') && (
+      {/*phone && !phone.startsWith('anon_') && */(
+        <View>
+            <Text style={styles.label}>Loyalty Points Available: {pointsAvailable}</Text>
         <Text style={styles.loyalty}>
           Applying {pointsToUse} points → You pay {formatCurrency(netPayable)}
         </Text>
+        </View>
       )}
 
       <CustomerForm phone={phone} setPhone={setPhone} />
 
       <Button title="Confirm Order" onPress={handleSubmit} />
+    
+      <TouchableOpacity style={styles.button} onPress={clearOrder}>
+                <Text style={styles.buttonText}>Clear Order</Text>
+              </TouchableOpacity>
 
       <ConfirmationModal
         visible={modalVisible}
@@ -98,12 +109,13 @@ const OrderSummary = () => {
       />
 
 
-      {phone && !phone.startsWith('anon_') && (
+      {/*phone && !phone.startsWith('anon_') && (
+  
   <View>
-    <Text style={styles.label}>Redeem Loyalty Points (Available: {pointsAvailable})</Text>
+    <Text style={styles.label}>Enter Loyalty Points to Reedem (Available: {pointsAvailable})</Text>
     <TextInput
       style={styles.input}
-      keyboardType="numeric"
+      keyboardType='numeric'
       value={pointsToUse.toString()}
       onChangeText={val => {
         const num = Math.min(parseInt(val || '0', 10), pointsAvailable, totalAmount);
@@ -114,17 +126,25 @@ const OrderSummary = () => {
       You pay: {formatCurrency(Math.max(totalAmount - pointsToUse, 0))}
     </Text>
   </View>
-)}
-    </View>
+)*/}
+<Text style ={{textAlign: 'center', justifyContent:'center', fontSize: 9, fontWeight: 'bold', padding: 10}}>
+  We value you privacy and nothing of your personal information is shared directly to our employees or anybody, everything is autonomous.
+  </Text>
+    </KeyboardAvoidingView>
     
   );
 };
 
 const styles = StyleSheet.create({
-  container: { paddingTop: 16, borderTopWidth: 1, borderTopColor: '#ddd' },
+  container: { paddingTop: 16, paddingBottom: 8, borderTopWidth: 1, borderTopColor: '#ddd'},
   title: { fontWeight: 'bold', fontSize: 18, marginBottom: 12 },
   total: { marginTop: 10, fontSize: 16, fontWeight: 'bold', color: '#264653' },
   loyalty: { fontStyle: 'italic', marginTop: 6, color: '#2a9d8f' },
+  button: {
+    backgroundColor: '#ff4b03ff', padding: 12, borderRadius: 6,
+    marginTop: 10, width: '60%', alignSelf: 'center'
+  },
+  buttonText: { color: '#fff', textAlign: 'center', fontWeight: 'bold' },
 });
 
 export default OrderSummary;

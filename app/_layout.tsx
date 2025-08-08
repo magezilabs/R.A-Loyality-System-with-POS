@@ -1,8 +1,6 @@
 import { SQLiteProvider } from 'expo-sqlite';
-import { setupDatabase } from '../services/initDatabase';
 import InnerApp from '../components/ui/innerApp';
-
-
+import { setupDatabase } from '../services/initDatabase';
 
 export default function Layout() {
   return (
@@ -10,9 +8,7 @@ export default function Layout() {
       databaseName="posa.db"
       onInit={setupDatabase}
     >
-      
-      <InnerApp />
-      
+        <InnerApp />
     </SQLiteProvider>
   );
 }

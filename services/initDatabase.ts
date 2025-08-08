@@ -9,4 +9,5 @@ export async function setupDatabase(db) {
   if (__DEV__) {
     await seedDatabase(db);
   }
+
 }
